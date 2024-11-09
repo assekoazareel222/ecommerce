@@ -1,15 +1,4 @@
-// import Produit from '../models/Produit.js';
 
-// export const getAllProduits = async (req, res) => {
-//   try {
-//     const produits = await Produit.findAll();
-//     res.json(produits);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Failed to fetch products' });
-//   }
-// };
-
-// produitController.js
 
 import Produit from '../models/Produit.js';
 
