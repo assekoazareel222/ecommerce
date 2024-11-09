@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 import produitRoutes from './routes/produitRoutes.js';
 import formulaireRoutes from './routes/formulaireRoutes.js';
 import factureRoutes from './routes/factureRoutes.js';
-
+import categorieRoutes from './routes/categorieRoutes.js';
 
 
 
@@ -21,6 +21,7 @@ app.use(bodyParser.json())
 app.use('/api', produitRoutes);
 app.use('/api', formulaireRoutes);
 app.use('/api/', factureRoutes);
+app.use('/api', categorieRoutes);
 
 
 

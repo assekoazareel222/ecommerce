@@ -37,3 +37,32 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
+
+// Contrôleur pour mettre à jour un produit
+export const updateProduit = async (req, res) => {
+  const { id } = req.params;
+  const { name, description, price, stock_quantity, image_url, categorie_id } = req.body;
+
+  try {
+    const produit = await Produit.findByPk(id);
+
+    if (!produit) {
+      return res.status(404).json({ message: 'Produit non trouvé' });
+    }
+
+    await produit.update({
+      name,
+      description,
+      price,
+      stock_quantity,
+      image_url,
+      categorie_id,
+    });
+
+    res.json({ message: 'Produit mis à jour avec succès', produit });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de la mise à jour du produit' });
+  }
+};
+
