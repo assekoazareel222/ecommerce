@@ -10,11 +10,11 @@ const Formulaire = sequelize.define('Formulaire', {
   numero_transaction: { type: DataTypes.STRING, allowNull: false, unique: true },
   adresse: { type: DataTypes.STRING, allowNull: false },
   mode_livraison: {
-    type: DataTypes.ENUM('standard', 'express', 'retrait en magasin'),
+    type: DataTypes.ENUM(, 'express', 'retrait en magasin'),
     allowNull: false,
   },
   moyen_paiement: {
-    type: DataTypes.ENUM('mobil cash', 'airtel monain', 'espèces'),
+    type: DataTypes.ENUM('mobil cash', 'airtel money', 'espèces'),
     allowNull: false,
   },
 }, {
