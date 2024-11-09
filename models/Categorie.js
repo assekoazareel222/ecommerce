@@ -1,3 +1,5 @@
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
 
 
 const Categorie = sequelize.define('Categorie', {
