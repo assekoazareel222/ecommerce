@@ -1,10 +1,10 @@
 import express from 'express';
 import { getFormulaires, createFormulaire, deleteFormulaire } from '../controllers/formulaireController.js';
 
-const router = express.Router();
+const formulairerouter = express.Router();
 
-router.get('/formulaire', getFormulaires);
-router.post('/formulaire', createFormulaire);
-router.delete('/formulaire/:id', deleteFormulaire);
+formulairerouter.get('/formulaire', getFormulaires);
+formulairerouter.post('/formulaire', createFormulaire);
+formulairerouter.delete('/formulaire/:id', deleteFormulaire);
 
-export default router;
+export default formulairerouter;

@@ -2,21 +2,21 @@
 import express from 'express';
 import { createFacture, getFactures, getFactureById, updateFacture, deleteFacture } from '../controllers/factureController.js';
 
-const router = express.Router();
+const facturerouter = express.Router();
 
 // Route pour créer une nouvelle facture
-router.post('/factures', createFacture);
+facturerouter.post('/factures', createFacture);
 
 // Route pour obtenir toutes les factures
-router.get('/factures', getFactures);
+facturerouter.get('/factures', getFactures);
 
 // Route pour obtenir une facture par ID
-router.get('/factures/:id', getFactureById);
+facturerouter.get('/factures/:id', getFactureById);
 
 // Route pour mettre à jour une facture
-router.put('/factures/:id', updateFacture);
+facturerouter.put('/factures/:id', updateFacture);
 
 // Route pour supprimer une facture
-router.delete('/factures/:id', deleteFacture);
+facturerouter.delete('/factures/:id', deleteFacture);
 
-export default router;
+export default facturerouter;

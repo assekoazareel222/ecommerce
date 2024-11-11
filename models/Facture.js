@@ -16,7 +16,7 @@ const Facture = sequelize.define('Facture', {
     defaultValue: 0,
     get() {
       const nombreArticles = this.getDataValue('nombre_article');
-      return nombreArticles > 3 ? 0 : (nombreArticles > 2 ? 5000 : 0);
+      return nombreArticles > 2 ? 0 : (nombreArticles > 3 ? 5000 : 0);
     }
   },
   total: {
