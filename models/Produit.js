@@ -1,9 +1,6 @@
-
-
-
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
-import Categorie from './Categorie.js';  // Assurez-vous que c'est bien la seule fois où `DataTypes` est importé
+import Categorie from './Categorie.js';
 
 const Produit = sequelize.define('Produit', {
   name: { type: DataTypes.STRING, allowNull: false },
@@ -18,4 +15,3 @@ const Produit = sequelize.define('Produit', {
 Produit.belongsTo(Categorie, { foreignKey: 'categorie_id' });
 
 export default Produit;
-
