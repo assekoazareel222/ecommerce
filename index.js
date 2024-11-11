@@ -6,10 +6,20 @@ import produitrouter from './routes/produitRoutes.js';
 import formulairerouter from './routes/formulaireRoutes.js';
 import facturerouter from './routes/factureRoutes.js';
 import categorierouter from './routes/categorieRoutes.js';
+import cors from 'cors';
 
 
 
+app.use(cors());
 
+// Si vous souhaitez limiter les origines autorisées :
+app.use(cors({
+  origin: '*'  // Remplacez par le domaine de votre app Next.js
+}));
+
+app.get('/path', (req, res) => {
+  res.json({ message: 'CORS configuré correctement !' });
+});
 
 dotenv.config();
 
