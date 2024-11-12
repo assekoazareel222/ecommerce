@@ -14,7 +14,7 @@ app.use(cors());
 
 // Si vous souhaitez limiter les origines autorisées :
 app.use(cors({
-  origin: '*'  // Remplacez par le domaine de votre app Next.js
+  origin: 'http://localhost:3000'  // Remplacez par le domaine de votre app Next.js
 }));
 
 app.get('/path', (req, res) => {
