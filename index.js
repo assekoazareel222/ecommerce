@@ -15,11 +15,14 @@ dotenv.config();
 const app = express();
 
 // Configurer CORS pour permettre les requêtes de votre frontend
-app.use(cors({
-  origin: 'http://localhost:3000',  // Remplacez cette URL par celle de votre frontend
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes autorisées
-  allowedHeaders: ['Content-Type', 'Authorization'] // En-têtes autorisés
-}));
+app.use(
+  cors({
+    origin: ["*"], // Autoriser les deux origines
+    methods: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+    allowedHeaders:
+      "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization",
+  })
+);
 
 // Middleware pour parser le corps des requêtes JSON
 app.use(express.json());
