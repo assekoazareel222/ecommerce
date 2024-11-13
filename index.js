@@ -7,6 +7,7 @@ import produitrouter from './routes/produitRoutes.js';
 import formulairerouter from './routes/formulaireRoutes.js';
 import facturerouter from './routes/factureRoutes.js';
 import categorierouter from './routes/categorieRoutes.js';
+import fs from 'fs';
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -15,14 +16,18 @@ dotenv.config();
 const app = express();
 
 // Configurer CORS pour permettre les requêtes de votre frontend
+
+// Activer CORS pour accepter les requêtes venant de http://localhost:3000 (par exemple, si votre client React fonctionne sur ce port)
 app.use(
   cors({
-    origin: ["*"], // Autoriser les deux origines
+    origin: ["localhoste:3000"], // Autoriser les deux origines
     methods: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
     allowedHeaders:
       "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization",
   })
 );
+
+// Exemple de ro
 
 // Middleware pour parser le corps des requêtes JSON
 app.use(express.json());

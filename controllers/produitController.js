@@ -17,6 +17,33 @@ const produitController = {
       res.status(500).json({ error: error.message });
     }
   },
+  async getOneProduct(req, res) {
+    try {
+      // Récupérer l'ID du produit à partir des paramètres de la requête
+      const { id } = req.params;
+  
+      // Rechercher le produit par ID avec l'association de la catégorie
+      const produit = await Produit.findOne({
+        where: { id }, // Condition pour récupérer le produit avec cet ID
+        include: {
+          model: Categorie,
+          attributes: ["id", "name"], // Sélectionnez les attributs de la catégorie
+        },
+      });
+  
+      // Vérifiez si le produit existe
+      if (!produit) {
+        return res.status(404).json({ error: "Produit non trouvé" });
+      }
+  
+      // Retourner le produit en format JSON
+      res.json(produit);
+    } catch (error) {
+      // Gérer les erreurs et renvoyer un statut 500
+      res.status(500).json({ error: error.message });
+    }
+  }
+  ,
 
   // Fonction pour créer un nouveau produit
   async createProduct(req, res) {
