@@ -20,7 +20,7 @@ const app = express();
 // Activer CORS pour accepter les requêtes venant de http://localhost:3000 (par exemple, si votre client React fonctionne sur ce port)
 app.use(
   cors({
-    origin: ["*"], // Autoriser les deux origines
+    origin: ["localhost:3000"], // Autoriser les deux origines
     methods: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
     allowedHeaders:
       "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization",
