@@ -15,71 +15,71 @@ export const getFormulaires = async (req, res) => {
 };
 
 
-export const createFormulaire = async (req, res) => {
-  const transaction = await Formulaire.sequelize.transaction(); // Gestion de transaction
-  try {
-    // Récupérer les données du formulaire depuis la requête
-    const {
-      nom,
-      prenom,
-      numero_transaction,
-      adresse,
-      mode_livraison,
-      moyen_paiement,
-      nom_article,
-      nombre_article,
-      prix_article,
-    } = req.body;
-
-    // Vérification des champs obligatoires
-    if (
-      !nom ||
-      !prenom ||
-      !numero_transaction ||
-      !adresse ||
-      !mode_livraison ||
-      !moyen_paiement ||
-      !nom_article ||
-      !nombre_article ||
-      !prix_article
-    ) {
-      return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
-    }
-
-    // Créer le formulaire
-    const formulaire = await Formulaire.create(
-      { nom, prenom, numero_transaction, adresse, mode_livraison, moyen_paiement },
-      { transaction }
-    );
-
-    // Calculer les frais de livraison
-    const livraison = nombre_article > 2 ? 0 : 2000;
-
-    // Calculer le total
-    const total = nombre_article * prix_article + livraison;
-
-    // Créer la facture associée
-    const facture = await Facture.create(
-      {
+  export const createFormulaire = async (req, res) => {
+    const transaction = await Formulaire.sequelize.transaction(); // Gestion de transaction
+    try {
+      // Récupérer les données du formulaire depuis la requête
+      const {
+        nom,
+        prenom,
+        numero_transaction,
+        adresse,
+        mode_livraison,
+        moyen_paiement,
         nom_article,
         nombre_article,
         prix_article,
-        numero_transaction, // Lié au formulaire
-        livraison,
-        total, // Assigner le total calculé ici
-      },
-      { transaction }
-    );
+      } = req.body;
 
-    // Confirmer la transaction
-    await transaction.commit();
+      // Vérification des champs obligatoires
+      if (
+        !nom ||
+        !prenom ||
+        !numero_transaction ||
+        !adresse ||
+        !mode_livraison ||
+        !moyen_paiement ||
+        !nom_article ||
+        !nombre_article ||
+        !prix_article
+      ) {
+        return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
+      }
 
-    // Retourner les données du formulaire et de la facture
-    res.status(201).json({
-      message: 'Formulaire et facture créés avec succès.',
-      formulaire,
-      facture,
-    });
+      // Créer le formulaire
+      const formulaire = await Formulaire.create(
+        { nom, prenom, numero_transaction, adresse, mode_livraison, moyen_paiement },
+        { transaction }
+      );
+
+      // Calculer les frais de livraison
+      const livraison = nombre_article > 2 ? 0 : 2000;
+
+      // Calculer le total
+      const total = nombre_article * prix_article + livraison;
+
+      // Créer la facture associée
+      const facture = await Facture.create(
+        {
+          nom_article,
+          nombre_article,
+          prix_article,
+          numero_transaction, // Lié au formulaire
+          livraison,
+          total, // Assigner le total calculé ici
+        },
+        { transaction }
+      );
+
+      // Confirmer la transaction
+      await transaction.commit();
+
+      // Retourner les données du formulaire et de la facture
+      res.status(201).json({
+        message: 'Formulaire et facture créés avec succès.',
+        formulaire,
+        facture,
+      });
   } catch (error) {
     // En cas d'erreur, annuler la transaction
     await transaction.rollback();

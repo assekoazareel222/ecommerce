@@ -1,5 +1,6 @@
 import Produit from "../models/Produit.js";
 import Categorie from "../models/Categorie.js";
+import Sequelize from "sequelize"; // N'oublie pas d'importer Sequelize pour utiliser Op.iLike
 
 // Définition de l'objet produitController
 const produitController = {
@@ -17,6 +18,8 @@ const produitController = {
       res.status(500).json({ error: error.message });
     }
   },
+
+  // Fonction pour récupérer un produit spécifique avec sa catégorie
   async getOneProduct(req, res) {
     try {
       // Récupérer l'ID du produit à partir des paramètres de la requête
@@ -42,8 +45,32 @@ const produitController = {
       // Gérer les erreurs et renvoyer un statut 500
       res.status(500).json({ error: error.message });
     }
-  }
-  ,
+  },
+
+  // Fonction de recherche des produits par nom
+  async searchProducts(req, res) {
+    try {
+      const searchTerm = req.query.q || ''; // Récupère le terme de recherche (query string)
+  
+      // Recherche insensible à la casse (fonctionne avec PostgreSQL et Sequelize)
+      const products = await Produit.findAll({
+        where: Sequelize.where(
+          Sequelize.fn('LOWER', Sequelize.col('name')),
+          'LIKE',
+          '%' + searchTerm.toLowerCase() + '%'
+        )
+      });
+      // Si des produits sont trouvés, on les retourne
+      if (products.length > 0) {
+        return res.json(products);
+      } else {
+        return res.status(404).json({ message: 'Aucun produit trouvé.' });
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Erreur du serveur' });
+    }
+  },
 
   // Fonction pour créer un nouveau produit
   async createProduct(req, res) {
@@ -117,7 +144,7 @@ const produitController = {
     }
   },
 
-  // Fonction pour liker un produit
+  // Fonction pour liker un produit (optionnel si tu veux l'ajouter à l'avenir)
   // async likeProduct(req, res) {
   //   try {
   //     const { id } = req.params;

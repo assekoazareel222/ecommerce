@@ -9,5 +9,6 @@ produitrouter.post('/produits', produitController.createProduct);
 produitrouter.put('/produits/:id', produitController.updateProduit);
 produitrouter.get('/produits/:id', produitController.getOneProduct);
 produitrouter.delete('/produits/:id', produitController.deleteProduct);
+produitrouter.get('/search', produitController.searchProducts);
 
 export default produitrouter;
