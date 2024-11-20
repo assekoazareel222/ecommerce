@@ -75,43 +75,48 @@ const produitController = {
   // Fonction pour créer un nouveau produit
   async createProduct(req, res) {
     try {
-      const { name, description, price, stock_quantity, image_url, categorie_id } = req.body;
-  
-      const errors = {};
-      if (!name || name.trim() === "") errors.name = "Le champ 'name' est requis.";
-      if (!description || description.trim() === "")
-        errors.description = "Le champ 'description' est requis.";
-      if (!price || isNaN(price)) errors.price = "Le champ 'price' doit être un nombre valide.";
-      if (!stock_quantity || isNaN(stock_quantity))
-        errors.stock_quantity = "Le champ 'stock_quantity' doit être un nombre valide.";
-      if (!image_url || image_url.trim() === "")
-        errors.image_url = "Le champ 'image_url' est requis.";
-      if (!categorie_id || isNaN(categorie_id))
-        errors.categorie_id = "Le champ 'categorie_id' doit être un nombre valide.";
-  
-      if (Object.keys(errors).length > 0) {
-        return res.status(400).json({ errors });
-      }
-  
-      const categorie = await Categorie.findByPk(categorie_id);
-      if (!categorie) {
-        return res.status(404).json({ error: "Catégorie non trouvée" });
-      }
-  
-      const produit = await Produit.create({
-        name,
-        description,
-        price,
-        stock_quantity,
-        image_url,
-        categorie_id,
-      });
-  
-      res.status(201).json(produit);
+        const { name, description, price, stock_quantity, image_url, categorie_id } = req.body;
+
+        const errors = {}; // Objet pour stocker les erreurs
+
+        // Vérification des champs
+        if (!name || name.trim() === "") errors.name = "Le champ 'name' est requis.";
+        if (!description || description.trim() === "") errors.description = "Le champ 'description' est requis.";
+        if (!price || isNaN(price) || price <= 0) errors.price = "Le champ 'price' doit être un nombre valide supérieur à 0.";
+        if (!stock_quantity || isNaN(stock_quantity) || stock_quantity < 0) errors.stock_quantity = "Le champ 'stock_quantity' doit être un nombre valide (0 ou plus).";
+        if (!image_url || image_url.trim() === "") errors.image_url = "Le champ 'image_url' est requis.";
+        if (!categorie_id || isNaN(categorie_id)) errors.categorie_id = "Le champ 'categorie_id' doit être un nombre valide.";
+
+        // Si des erreurs sont présentes, renvoyer un message d'erreur détaillé
+        if (Object.keys(errors).length > 0) {
+            return res.status(400).json({ errors });
+        }
+
+        // Vérifier si la catégorie existe
+        const categorie = await Categorie.findByPk(categorie_id);
+        if (!categorie) {
+            return res.status(404).json({ error: "Catégorie non trouvée" });
+        }
+
+        // Créer le produit
+        const produit = await Produit.create({
+            name,
+            description,
+            price,
+            stock_quantity,
+            image_url,
+            categorie_id,
+        });
+
+        // Répondre avec le produit créé
+        res.status(201).json(produit);
+
     } catch (error) {
-      res.status(500).json({ error: error.message });
+        console.error(error); // Ajout de la journalisation des erreurs serveur
+        res.status(500).json({ error: error.message });
     }
-  },
+}
+,
   
 
   // Fonction pour mettre à jour un produit
